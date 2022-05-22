@@ -1,0 +1,51 @@
+//--------Batch job-------------
+global class LeadProcessor implements Database.Batchable<Sobject> 
+{
+    global Database.QueryLocator start(Database.BatchableContext bc) 
+    {
+        return Database.getQueryLocator([Select LeadSource From Lead ]);
+    }
+
+    global void execute(Database.BatchableContext bc, List<Lead> scope)
+    {
+            for (Lead Leads : scope) 
+            {
+                Leads.LeadSource = 'Dreamforce';
+            }
+        update scope;
+    }    
+
+    global void finish(Database.BatchableContext bc){   }    
+}
+
+
+
+
+
+
+//--------------Test class-----------------
+@isTest 
+public class LeadProcessorTest 
+{
+    static testMethod void testMethod1() 
+    {
+        Lead[] lstLead = new Lead[0];
+        for(Integer i=0 ;i <200;i++)
+        {
+            Lead led = new Lead();
+            led.FirstName ='FirstName';
+            led.LastName ='LastName'+i;
+            led.Company ='demo'+i;
+            lstLead.add(led);
+        }
+        
+        insert lstLead;
+        
+        Test.startTest();
+
+        LeadProcessor l = new LeadProcessor();
+        Database.executeBatch(l); 
+            
+        Test.stopTest();
+    }
+}

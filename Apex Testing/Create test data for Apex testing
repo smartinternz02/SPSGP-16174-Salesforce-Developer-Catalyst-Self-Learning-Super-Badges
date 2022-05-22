@@ -1,0 +1,19 @@
+public class RandomContactFactory{
+
+    public static List<Contact> generateRandomContacts(integer n,string LastName){
+    integer n1=n;
+    List<contact> c1 = new list<contact>();
+    list<contact> c2 =new list<contact>();
+     c1 = [select FirstName from Contact Limit : n1];
+     integer i=0;
+     for(contact cnew : c1){
+     contact cnew1 = new contact();
+     cnew1.firstname = cnew.firstname + i;
+     
+     c2.add(cnew1);
+     i++;
+     }
+    return c2;
+    
+    }
+}
